@@ -1,0 +1,24 @@
+---
+    - name: Get update list from host
+      hosts: all
+      gather_facts: true
+    
+      tasks:
+      - name: gpname_env_updatelist (yum)
+        shell: |
+          echo ""
+          yum clean all
+          yum -y check-update
+          echo "----------------------------------------------------------------------------------"
+        ignore_errors: true
+        when: ansible_facts['os_family'] == "RedHat"
+      - name: gpname_env_updatelist (apt)
+        shell: |
+          echo ""
+          apt-get clean
+          apt update
+          apt list --upgradeable
+          echo "------------------------------------------------"
+        ignore_errors: true
+        when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+...

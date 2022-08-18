@@ -1,0 +1,22 @@
+---
+    - name: Check installed packages with mask
+      hosts: all
+      gather_facts: true
+    
+      tasks:
+      - name: gpname_env_packagelist (yum)
+        shell: |
+          echo ""
+          yum list installed | grep -i 'consul\|promet\|keepalived\|redis\|conflu\|oracle\|kafka\|dock\|kub\|lx\|edge\|oneagent\|apigee\|okagent\|akhq\|maria\|postg\|pg\|percon\|zk\|hap\|mongo\|teleg\|node\|nginx\|java\|apach\|elast\|logstash\|kiban\|beat\|beam\|rabbit\|epmd\|mysql\|influ\|burro\|zoo\|postm' | grep -v 'gnupg\|gpgme\|MariaDB-common\|MariaaDB-compat\|javapackages\|centos-gpg-keys\|lib\|tzdata\|python'
+          echo "-----------------------------------------------------------------------------------"
+        ignore_errors: true
+        when: ansible_facts['os_family'] == "RedHat"
+    
+      - name: gpname_env_packagelist (apt)
+        shell: |
+          echo ""
+          apt list --installed | grep -i 'consul\|promet\|keepalived\|redis\|conflu\|oracle\|kafka\|dock\|kub\|lx\|edge\|oneagent\|okagent\|akhq\|maria\|postg\|^pg\|percon\|zk\|hap\|mongo\|teleg\|node\|nginx\|java\|apach\|elast\|logstash\|kiban\|beat\|beam\|rabbit\|epmd\|mysql\|influ\|burro\|zoo\|postm' | grep -v 'gnupg\|gpgme\|MariaDB-common\|MariaDB-compat\|javapackages\|centos-gpg-keys\|lib\|tzdata\|python'
+          echo "--------------------------------------------------------------"
+        ignore_errors: true
+        when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+...

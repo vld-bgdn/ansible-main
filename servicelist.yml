@@ -1,0 +1,15 @@
+---
+    - name: Check active spec. services and network services
+      hosts: all
+      gather_facts: false
+    
+      tasks:
+      - name: gpname_env_servicelist
+        shell: |
+          echo ""
+          echo "--------------------------Active services------------------------------------------"
+          systemctl list-units --type=service --state running,failed --no-legend | grep -v 'NetworkManager.service\|ModemManager.service\|auditd.service\|uuidd.service\|chronyd.service\|crond.service\|nscd.service\|sshd.service\|firewalld.service\|vmtoolsd.service\|sssd.service\|sssd-kcm.service\|libstoragemgmt.service\|ntp.service\|atd.service\|accounts-daemon.service\|cron.service\|dbus.service\|getty@tty1.service\|irqbalance.service\|multipathd.service\|networkd-dispatcher.service\|open-vm-tools.service\|packagekit.service\|polkit.service\|prometheus.service\|rsyslog.service\|snapd.service\|ssh.service\|systemd-journald.service\|systemd-logind.service\|systemd-networkd.service\|systemd-resolved.service\|systemd-timesyncd.service\|systemd-udevd.service\|udisks2.service\|unattended-upgrades.service\|upower.service\|user@\|vgauth.service\|lvm2-lvmetad.service\|vgauthd.service\|tuned.service\|smartd.service\|mcelog.service\|rngd.service\|mdadm.service\|ua-timer.service\|acpid.service\|polkitd.service\|zabbix-agent.service\|iscsid.service' | sed 's/ *$//' | sed 's/^[ \t]*//'
+          echo "--------------------------Active netservices---------------------------------------"
+          ss -tlpn | grep LISTEN | grep -v 'sshd\|zabbix_agentd\|exporter' | column -t
+          echo "-----------------------------------------------------------------------------------"
+...

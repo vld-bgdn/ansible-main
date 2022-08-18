@@ -1,0 +1,9 @@
+---
+    - name: Get distro version
+      hosts: all
+      gather_facts: true
+      
+      tasks:
+      - name: Distribution version
+        debug: msg="{{ ansible_distribution }} {{ ansible_distribution_version }}"
+...
